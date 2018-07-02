@@ -1,13 +1,13 @@
 package controller
 
 import (
-	"../model"
-	"../restgo"
+	"github.com/jackysc/restgo-admin/model"
+	"github.com/jackysc/restgo-admin/restgo"
 
 	"github.com/gin-gonic/gin"
 
-	"../entity"
-	"../service"
+	"github.com/jackysc/restgo-admin/entity"
+	"github.com/jackysc/restgo-admin/service"
 
 	"github.com/gin-gonic/gin/binding"
 )

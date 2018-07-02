@@ -2,8 +2,9 @@ package service
 
 import (
 	"errors"
-	"../entity"
-	"../restgo"
+
+	"github.com/jackysc/restgo-admin/entity"
+	"github.com/jackysc/restgo-admin/restgo"
 )
 
 //资源服务层

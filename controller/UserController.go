@@ -2,18 +2,18 @@ package controller
 
 import (
 	"net/http"
-	"../model"
-	"../restgo"
+
+	"github.com/jackysc/restgo-admin/model"
+	"github.com/jackysc/restgo-admin/restgo"
 
 	"github.com/gin-gonic/gin"
 
-	"../entity"
-	"../service"
 	"strconv"
 
+	"github.com/jackysc/restgo-admin/entity"
+	"github.com/jackysc/restgo-admin/service"
+
 	"github.com/gin-gonic/gin/binding"
-
-
 )
 
 //用户管理控制器
@@ -105,7 +105,6 @@ func (ctrl *UserController) login(ctx *gin.Context) {
 	}
 
 }
-
 
 //退出系统
 func (ctrl *UserController) quit(ctx *gin.Context) {
