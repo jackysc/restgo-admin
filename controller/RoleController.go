@@ -38,6 +38,7 @@ func (ctrl *RoleController) init() {
 func (ctrl *RoleController) Router(router *gin.Engine) {
 	ctrl.init()
 	r := router.Group("role")
+	r.Use(restgo.IsLogin())
 	r.POST("create", ctrl.create)
 	r.POST("search", ctrl.query)
 	r.POST("loadauth", ctrl.loadroleauth)

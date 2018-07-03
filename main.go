@@ -10,7 +10,8 @@ import (
 
 	"github.com/go-xorm/xorm"
 
-	"github.com/tommy351/gin-sessions"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/redis"
 
 	"os"
 	"strconv"
@@ -91,7 +92,7 @@ func main() {
 
 	router.LoadHTMLGlob(cfg.View["path"] + "/**/*")
 	router.Delims(cfg.View["deliml"], cfg.View["delimr"])
-
+	store, _ := redis.NewStore(10, "tcp")
 	store := sessions.NewCookieStore([]byte(cfg.Session["name"]))
 	router.Use(sessions.Middleware(cfg.Session["name"], store))
 	router.Use(restgo.Auth())

@@ -28,10 +28,11 @@ var userService service.UserService
 func (ctrl *UserController) Router(router *gin.Engine) {
 
 	r := router.Group("user")
+	r.POST("login", ctrl.login)
+	r.POST("register", ctrl.register)
+	r.Use(restgo.IsLogin())
 	r.POST("search", ctrl.query)
 	r.POST("findOne", ctrl.findOne)
-	r.POST("register", ctrl.register)
-	r.POST("login", ctrl.login)
 	r.Any("quit", ctrl.quit)
 	r.POST("updatestat", ctrl.updateStat)
 
@@ -57,13 +58,17 @@ func (ctrl *UserController) findOne(ctx *gin.Context) {
 func (ctrl *UserController) updateStat(ctx *gin.Context) {
 	userId, _ := strconv.ParseInt(ctx.PostForm("id"), 10, 64)
 	stat, _ := strconv.Atoi(ctx.PostForm("stat"))
-	_, err := userService.UpdateStat(userId, stat)
-	if err != nil {
-		restgo.ResultFail(ctx, "修改失败,请稍后再试"+err.Error())
+	user := restgo.LoadUser(ctx)
+	if user != nil && user.(entity.User).ID == userId {
+		restgo.ResultFail(ctx, "修改失败,禁止禁用当前用户")
 	} else {
-		restgo.ResultOkMsg(ctx, nil, "修改成功,请稍后再试")
+		_, err := userService.UpdateStat(userId, stat)
+		if err != nil {
+			restgo.ResultFail(ctx, "修改失败,请稍后再试"+err.Error())
+		} else {
+			restgo.ResultOkMsg(ctx, nil, "修改成功,请稍后再试")
+		}
 	}
-
 }
 
 //注册用户信息
@@ -82,6 +87,7 @@ func (ctrl *UserController) register(ctx *gin.Context) {
 	if err != nil {
 		restgo.ResultFail(ctx, err.Error())
 	} else {
+		restgo.SaveUser(ctx, ret)
 		restgo.ResultOkMsg(ctx, ret, "恭喜你注册成功")
 	}
 
@@ -101,6 +107,7 @@ func (ctrl *UserController) login(ctx *gin.Context) {
 	if err != nil {
 		restgo.ResultFail(ctx, err.Error())
 	} else {
+		restgo.SaveUser(ctx, ret)
 		restgo.ResultOkMsg(ctx, ret, "恭喜你登录成功")
 	}
 

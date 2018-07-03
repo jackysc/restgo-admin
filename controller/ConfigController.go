@@ -21,6 +21,7 @@ var configService service.ConfigService
 func (ctrl *ConfigController) Router(router *gin.Engine) {
 
 	r := router.Group("config")
+	r.Use(restgo.IsLogin())
 	r.POST("create", ctrl.create)
 	r.POST("search", ctrl.query)
 	r.POST("update", ctrl.update)

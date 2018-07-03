@@ -29,6 +29,7 @@ func (ctrl *ResController) init() {
 func (ctrl *ResController) Router(router *gin.Engine) {
 	ctrl.init()
 	r := router.Group("resource")
+	r.Use(restgo.IsLogin())
 	r.POST("addmod", ctrl.addmod)
 	r.POST("addres", ctrl.addres)
 	r.POST("search", ctrl.search)
