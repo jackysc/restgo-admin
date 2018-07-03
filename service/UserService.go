@@ -121,7 +121,7 @@ func (service *UserService) Register(ctx *gin.Context, user *entity.User) (p *en
 	}
 	user.Passwd = restgo.Md5encode(user.Passwd)
 	user.Stat = 1
-	user.CreateAt = restgo.JsonDateTime(time.Now())
+	user.CreateAt = time.Now()
 	user.ID, err = orm.InsertOne(user)
 	restgo.SaveUser(ctx, user)
 	p = user
