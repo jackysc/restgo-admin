@@ -1,4 +1,5 @@
 package restgo
+
 import (
 	crand "crypto/rand"
 
@@ -8,12 +9,12 @@ import (
 	"io"
 	"math/rand"
 
-
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"strconv"
-	"github.com/tommy351/gin-sessions"
+
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 )
 
 const (
@@ -393,23 +394,23 @@ func NewLenChars(length int, chars []byte) string {
 
 func LoadVerify(ctx *gin.Context) {
 	d := make([]byte, 4)
-	s :=NewLen(4)
+	s := NewLen(4)
 	ss := ""
 	d = []byte(s)
 	for v := range d {
 		d[v] %= 10
 		ss += strconv.FormatInt(int64(d[v]), 32)
 	}
-	session := sessions.Get(ctx)
-	session.Set("___verify",ss)
+	session := sessions.Default(ctx)
+	session.Set("___verify", ss)
 	session.Save()
 	NewImage(d, 100, 40).WriteTo(ctx.Writer)
 
 }
-func CheckVerify(ctx *gin.Context,code string) bool{
-	session := sessions.Get(ctx)
+func CheckVerify(ctx *gin.Context, code string) bool {
+	session := sessions.Default(ctx)
 	v := session.Get("___verify")
 	session.Delete("___verify")
 	session.Save()
-	return v== code
+	return v == code
 }

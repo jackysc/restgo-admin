@@ -111,12 +111,6 @@
   version = "v0.0.3"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/tommy351/gin-sessions"
-  packages = ["."]
-  revision = "353060947eb6549deb9e15229c73ed37931acf5f"
-
-[[projects]]
   name = "github.com/ugorji/go"
   packages = ["codec"]
   revision = "b4c50a2b199d93b13dc15e78929cfb23bfdf21ab"
@@ -149,6 +143,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "65eef2e643e1b03481c0f26b98f24df63116762f22e617c75c72e585d7baa5e2"
+  inputs-digest = "84c1e462badcda5a2286087a2c9aff8deeee666722c6b4ac3677a9a603a0892b"
   solver-name = "gps-cdcl"
   solver-version = 1

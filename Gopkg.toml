@@ -48,11 +48,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/lib/pq"
-
-[[constraint]]
-  branch = "master"
-  name = "github.com/tommy351/gin-sessions"
-
+  
 [prune]
   go-tests = true
   unused-packages = true

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"net/http"
 
@@ -29,6 +30,10 @@ func registerRouter(router *gin.Engine) {
 	new(controller.ResController).Router(router)
 	new(controller.ConfigController).Router(router)
 
+}
+
+func init() {
+	gob.Register(entity.User{})
 }
 
 func main() {
@@ -92,13 +97,15 @@ func main() {
 
 	router.LoadHTMLGlob(cfg.View["path"] + "/**/*")
 	router.Delims(cfg.View["deliml"], cfg.View["delimr"])
-	store, _ := redis.NewStore(10, "tcp")
-	store := sessions.NewCookieStore([]byte(cfg.Session["name"]))
-	router.Use(sessions.Middleware(cfg.Session["name"], store))
+	store, err := redis.NewStore(10, "tcp", fmt.Sprintf("%s:%s", cfg.Redis["host"], cfg.Redis["port"]), cfg.Redis["passwd"], []byte(cfg.Session["name"]))
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	router.Use(sessions.Sessions(cfg.Session["name"], store))
 	router.Use(restgo.Auth())
 	registerRouter(router)
 
-	err := http.ListenAndServe(cfg.App["addr"]+":"+cfg.App["port"], router)
+	err = http.ListenAndServe(cfg.App["addr"]+":"+cfg.App["port"], router)
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {

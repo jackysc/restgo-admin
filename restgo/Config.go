@@ -20,6 +20,7 @@ type Config struct {
 	View        map[string]string
 	TempFileMap map[string]int
 	All         map[string]string
+	Redis       map[string]string
 }
 
 func (cfg *Config) Parse(fpath string) {
@@ -33,6 +34,7 @@ func (cfg *Config) Parse(fpath string) {
 	cfg.All = make(map[string]string)
 	cfg.Logger = make(map[string]string)
 	cfg.TempFileMap = make(map[string]int)
+	cfg.Redis = make(map[string]string)
 
 	fi, err := os.Open(fpath)
 	if err != nil {
@@ -85,6 +87,9 @@ func (cfg *Config) Parse(fpath string) {
 		} else if strings.Index(k, "restgo.staticfile.") == 0 {
 			tmp := strings.TrimPrefix(k, "restgo.staticfile.")
 			cfg.StaticFile[tmp] = v
+		} else if strings.Index(k, "restgo.redis.") == 0 {
+			tmp := strings.TrimPrefix(k, "restgo.redis.")
+			cfg.Redis[tmp] = v
 		} else if strings.Index(k, "restgo.datasource.") == 0 {
 			var sd = strings.Split(k, ".")
 			if nil == cfg.Datasource[sd[2]] {
